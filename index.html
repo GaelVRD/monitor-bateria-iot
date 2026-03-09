@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<title>Monitor batería IoT</title>
+
+<style>
+
+body{
+font-family: Arial;
+background:#111;
+color:white;
+text-align:center;
+}
+
+.card{
+background:#222;
+padding:20px;
+margin:20px;
+border-radius:10px;
+}
+
+.valor{
+font-size:35px;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<h1>Monitor batería IoT</h1>
+
+<div class="card">
+Voltaje
+<div id="v" class="valor">--</div>
+</div>
+
+<div class="card">
+Corriente
+<div id="i" class="valor">--</div>
+</div>
+
+<div class="card">
+Potencia
+<div id="p" class="valor">--</div>
+</div>
+
+<script>
+
+const url="https://script.google.com/macros/s/AKfycbxpClbQsqh69SLdFg_fPBNPN1MNcFiaWSAGClC2mcVgGfH7vDvY9RxRX3Q9aL0swa4ngQ/exec";
+
+async function actualizar(){
+
+let r = await fetch(url);
+let d = await r.json();
+
+document.getElementById("v").innerText=d.voltaje+" V";
+document.getElementById("i").innerText=d.corriente+" A";
+document.getElementById("p").innerText=d.potencia+" W";
+
+}
+
+setInterval(actualizar,5000);
+
+actualizar();
+
+</script>
+
+</body>
+</html>
