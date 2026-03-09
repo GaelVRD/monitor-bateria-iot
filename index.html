@@ -60,69 +60,66 @@ Potencia
 <h2>Gráfica de voltaje</h2>
 
 <canvas id="graficaVoltaje"></canvas>
-
 <script>
 
-const url="https://script.google.com/macros/s/AKfycbys1Zo3A7-hmdTwhwQ7viXDcNG_KiysLZol4BOyb-2SbS_09IGwRAEnM5Pl-EIhcaIPqQ/exec";
+const url = "https://script.google.com/macros/s/AKfycbys1Zo3A7-hmdTwhwQ7viXDcNG_KiysLZol4BOyb-2SbS_09IGwRAEnM5Pl-EIhcaIPqQ/exec";
 
 const ctx = document.getElementById("graficaVoltaje");
 
 const grafica = new Chart(ctx, {
-type: "line",
-data: {
-labels: [],
-datasets: [{
-label: "Voltaje batería (V)",
-data: [],
-borderColor: "lime",
-borderWidth: 2,
-tension: 0.2
-}]
-},
-options: {
-scales: {
-y: {
-beginAtZero: false
-}
-}
-}
+  type: "line",
+  data: {
+    labels: [],
+    datasets: [{
+      label: "Voltaje batería (V)",
+      data: [],
+      borderColor: "lime",
+      borderWidth: 2,
+      tension: 0.2
+    }]
+  },
+  options: {
+    scales: {
+      y: {
+        beginAtZero: false
+      }
+    }
+  }
 });
 
-async function actualizar(){
 
-let r = await fetch(url);
-let datos = await r.json();
+async function actualizar() {
 
-// limpiar gráfica
-grafica.data.labels=[];
-grafica.data.datasets[0].data=[];
+  let r = await fetch(url);
+  let d = await r.json();
 
-// recorrer últimos registros
-for(let i=0;i<datos.length;i++){
+  // mostrar valores actuales
+  document.getElementById("v").innerText = d.voltaje + " V";
+  document.getElementById("i").innerText = d.corriente + " A";
+  document.getElementById("p").innerText = d.potencia + " W";
 
-let tiempo = new Date(datos[i].tiempo).toLocaleTimeString();
+  // agregar punto a la gráfica
+  let tiempo = new Date().toLocaleTimeString();
 
-grafica.data.labels.push(tiempo);
-grafica.data.datasets[0].data.push(datos[i].voltaje);
+  grafica.data.labels.push(tiempo);
+  grafica.data.datasets[0].data.push(d.voltaje);
 
+  // mantener máximo 20 valores
+  if (grafica.data.labels.length > 20) {
+    grafica.data.labels.shift();
+    grafica.data.datasets[0].data.shift();
+  }
+
+  grafica.update();
 }
 
-// mostrar último valor en dashboard
-let ultimo = datos[datos.length-1];
 
-document.getElementById("v").innerText=ultimo.voltaje+" V";
-document.getElementById("i").innerText=ultimo.corriente+" A";
-document.getElementById("p").innerText=ultimo.potencia+" W";
+// actualizar cada minuto
+setInterval(actualizar, 60000);
 
-grafica.update();
-
-}
-
-setInterval(actualizar,60000);
-
+// primera lectura al cargar la página
 actualizar();
 
 </script>
-
 </body>
 </html>
