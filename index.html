@@ -11,31 +11,82 @@
 <style>
 
 body{
+
 font-family: Arial;
-background:#111;
+background: linear-gradient(to bottom, #111, #1c1c1c);
 color:white;
 text-align:center;
-}
-
-.card{
-background:#222;
+margin:0;
 padding:20px;
-margin:20px;
-border-radius:10px;
-}
-
-.valor{
-font-size:35px;
-}
-
-canvas{
-max-width:800px;
-margin:auto;
 }
 
 
 /* ========================= */
-/* LEDs visuales */
+/* Contenedor */
+/* ========================= */
+
+.contenedor{
+
+display:flex;
+flex-wrap:wrap;
+justify-content:center;
+gap:20px;
+}
+
+
+/* ========================= */
+/* Tarjetas */
+/* ========================= */
+
+.card{
+
+background:#222;
+padding:25px;
+border-radius:15px;
+width:250px;
+
+box-shadow:
+0 0 10px rgba(0,0,0,0.5);
+
+transition:0.3s;
+}
+
+
+.card:hover{
+
+transform:translateY(-5px);
+
+box-shadow:
+0 0 20px rgba(0,255,0,0.3);
+}
+
+
+/* ========================= */
+/* Valores */
+/* ========================= */
+
+.valor{
+
+font-size:40px;
+font-weight:bold;
+margin-top:10px;
+}
+
+
+/* ========================= */
+/* Canvas */
+/* ========================= */
+
+canvas{
+
+max-width:900px;
+margin:auto;
+margin-top:20px;
+}
+
+
+/* ========================= */
+/* LEDs */
 /* ========================= */
 
 .led{
@@ -48,27 +99,43 @@ margin-right:10px;
 }
 
 
-/* LED verde */
+/* Verde */
+
 .verde{
+
 background:lime;
+
+box-shadow:
+0 0 15px lime;
 }
 
 
-/* LED rojo */
+/* Rojo */
+
 .rojo{
+
 background:red;
+
+box-shadow:
+0 0 15px red;
 }
 
 
-/* LED apagado */
-.apagado{
-opacity:0.2;
-}
+/* Encendido */
 
-
-/* LED encendido */
 .encendido{
+
 opacity:1;
+}
+
+
+/* Apagado */
+
+.apagado{
+
+opacity:0.2;
+
+box-shadow:none;
 }
 
 
@@ -78,23 +145,105 @@ opacity:1;
 
 button{
 
-padding:10px 20px;
+padding:12px 20px;
 margin:5px;
-font-size:16px;
+font-size:15px;
+
 border:none;
-border-radius:8px;
+border-radius:10px;
+
 cursor:pointer;
+
+background:#333;
+color:white;
+
+transition:0.3s;
+}
+
+
+button:hover{
+
+background:lime;
+color:black;
 }
 
 
 /* ========================= */
-/* Input hora */
+/* Input */
 /* ========================= */
 
 input{
 
-padding:8px;
+padding:10px;
+font-size:15px;
+
+border-radius:8px;
+border:none;
+}
+
+
+/* ========================= */
+/* Títulos */
+/* ========================= */
+
+h1{
+
+font-size:40px;
+margin-bottom:5px;
+}
+
+
+h3{
+
+color:#aaa;
+margin-top:0;
+}
+
+
+h2{
+
+margin-top:10px;
+}
+
+
+/* ========================= */
+/* Secciones desplegables */
+/* ========================= */
+
+details{
+
+background:#222;
+padding:15px;
+margin:20px;
+border-radius:15px;
+}
+
+
+summary{
+
+font-size:22px;
+font-weight:bold;
+cursor:pointer;
+list-style:none;
+}
+
+
+summary:hover{
+
+color:lime;
+}
+
+
+/* ========================= */
+/* Selector */
+/* ========================= */
+
+select{
+
+padding:10px;
 font-size:16px;
+border-radius:8px;
+border:none;
 }
 
 </style>
@@ -107,62 +256,87 @@ font-size:16px;
 <h3>Equipo 03</h3>
 
 
+
 <!-- ========================= -->
-<!-- Tarjeta voltaje -->
+<!-- SECCIÓN MONITOREO -->
 <!-- ========================= -->
 
+<details>
+
+<summary>
+Monitoreo en tiempo real
+</summary>
+
+<div class="contenedor">
+
+
+<!-- Voltaje -->
+
 <div class="card">
+
 Voltaje
-<div id="v" class="valor">--</div>
+
+<div id="v" class="valor">
+--
+</div>
+
 </div>
 
 
-<!-- ========================= -->
-<!-- Tarjeta corriente -->
-<!-- ========================= -->
+
+<!-- Corriente -->
 
 <div class="card">
+
 Corriente
-<div id="i" class="valor">--</div>
+
+<div id="i" class="valor">
+--
+</div>
+
 </div>
 
 
-<!-- ========================= -->
-<!-- Tarjeta potencia -->
-<!-- ========================= -->
+
+<!-- Potencia -->
 
 <div class="card">
+
 Potencia
-<div id="p" class="valor">--</div>
+
+<div id="p" class="valor">
+--
+</div>
+
 </div>
 
 
 
-<!-- ========================= -->
-<!-- Estado del sistema -->
-<!-- ========================= -->
+<!-- Estado -->
 
 <div class="card">
 
 <h2>Estado del sistema</h2>
 
-<!-- LED verde -->
-<div id="ledVerde" class="led verde apagado"></div>
+<div id="ledVerde"
+class="led verde apagado">
+</div>
+
 Funcionando
 
 <br><br>
 
-<!-- LED rojo -->
-<div id="ledRojo" class="led rojo encendido"></div>
+<div id="ledRojo"
+class="led rojo encendido">
+</div>
+
 Detenido
 
 </div>
 
 
 
-<!-- ========================= -->
 <!-- Controles -->
-<!-- ========================= -->
 
 <div class="card">
 
@@ -186,256 +360,425 @@ PARO POR HORARIO
 
 </div>
 
+</div>
+
+</details>
 
 
-<h2>Gráfica de voltaje</h2>
+
+<!-- ========================= -->
+<!-- GRÁFICAS -->
+<!-- ========================= -->
+
+<h2>Gráficas</h2>
+
+<select id="selectorGrafica"
+onchange="cambiarGrafica()">
+
+<option value="voltaje">
+Voltaje
+</option>
+
+<option value="corriente">
+Corriente
+</option>
+
+<option value="potencia">
+Potencia
+</option>
+
+<option value="todas">
+Todas
+</option>
+
+</select>
+
+<br><br>
 
 <canvas id="graficaVoltaje"></canvas>
 
 
+
 <script>
 
-/* URL del Apps Script */
-const url = "https://script.google.com/macros/s/AKfycbys1Zo3A7-hmdTwhwQ7viXDcNG_KiysLZol4BOyb-2SbS_09IGwRAEnM5Pl-EIhcaIPqQ/exec";
+/* URL Apps Script */
+const url =
+"https://script.google.com/macros/s/AKfycbys1Zo3A7-hmdTwhwQ7viXDcNG_KiysLZol4BOyb-2SbS_09IGwRAEnM5Pl-EIhcaIPqQ/exec";
 
 
-/* Canvas de la gráfica */
-const ctx = document.getElementById("graficaVoltaje");
+/* Historial corriente */
+let historialCorriente =
+JSON.parse(localStorage.getItem("corrientes")) || [];
+
+
+/* Historial potencia */
+let historialPotencia =
+JSON.parse(localStorage.getItem("potencias")) || [];
+
+
+/* Canvas */
+const ctx =
+document.getElementById("graficaVoltaje");
 
 
 /* Crear gráfica */
 const grafica = new Chart(ctx, {
 
-  type: "line",
+type:"line",
 
-  data: {
+data:{
 
-    /* Recuperar historial guardado */
-    labels: JSON.parse(localStorage.getItem("labels")) || [],
+labels:
+JSON.parse(localStorage.getItem("labels")) || [],
 
-    datasets: [{
+datasets:[
 
-      label: "Voltaje batería (V)",
+{
 
-      data: JSON.parse(localStorage.getItem("voltajes")) || [],
+label:"Voltaje (V)",
 
-      borderColor: "lime",
+data:
+JSON.parse(localStorage.getItem("voltajes")) || [],
 
-      borderWidth: 2,
+borderColor:"lime",
 
-      tension: 0.2
-    }]
-  },
+borderWidth:2,
 
-  options: {
+tension:0.2
+},
 
-    scales: {
+{
 
-      y: {
+label:"Corriente (A)",
 
-        beginAtZero: false
-      }
-    }
-  }
+data:historialCorriente,
+
+borderColor:"cyan",
+
+borderWidth:2,
+
+tension:0.2,
+
+hidden:true
+},
+
+{
+
+label:"Potencia (W)",
+
+data:historialPotencia,
+
+borderColor:"yellow",
+
+borderWidth:2,
+
+tension:0.2,
+
+hidden:true
+}
+
+]
+
+},
+
+options:{
+
+scales:{
+
+y:{
+
+beginAtZero:false
+}
+
+}
+
+}
+
 });
 
 
 /* ========================= */
-/* Estado del sistema */
+/* Estado sistema */
 /* ========================= */
 
 let sistemaActivo = false;
 
 
 /* ========================= */
-/* Actualizar datos */
+/* Actualizar */
 /* ========================= */
 
-async function actualizar() {
+async function actualizar(){
 
-  let r = await fetch(url);
+let r = await fetch(url);
 
-  let d = await r.json();
-
-
-  /* Verificar si llegaron datos */
-  if(d.length === 0){
-    return;
-  }
+let d = await r.json();
 
 
-  /* Obtener último registro */
-  let ultimo = d[d.length - 1];
+/* Verificar datos */
+if(d.length === 0){
+
+return;
+}
 
 
-  /* Mostrar valores actuales */
-
-  document.getElementById("v").innerText =
-  ultimo.voltaje + " V";
-
-  document.getElementById("i").innerText =
-  ultimo.corriente + " A";
-
-  document.getElementById("p").innerText =
-  ultimo.potencia + " W";
+/* Último registro */
+let ultimo = d[d.length - 1];
 
 
-  /* Crear etiqueta de tiempo */
-  let tiempo =
-  new Date(ultimo.tiempo).toLocaleTimeString();
+/* Mostrar valores */
+
+document.getElementById("v").innerText =
+ultimo.voltaje + " V";
+
+document.getElementById("i").innerText =
+ultimo.corriente + " A";
+
+document.getElementById("p").innerText =
+ultimo.potencia + " W";
 
 
-  /* Evitar duplicados al refrescar */
-  let ultimoLabel =
-  grafica.data.labels[grafica.data.labels.length - 1];
+/* Tiempo */
+let tiempo =
+new Date(ultimo.tiempo).toLocaleTimeString();
 
 
-  if(ultimoLabel !== tiempo){
-
-    /* Agregar nuevo punto */
-    grafica.data.labels.push(tiempo);
-
-    grafica.data.datasets[0].data.push(
-    ultimo.voltaje
-    );
-  }
+/* Evitar duplicados */
+let ultimoLabel =
+grafica.data.labels[grafica.data.labels.length - 1];
 
 
-  /* Mantener mínimo historial reciente */
-  if(grafica.data.labels.length > 20){
+if(ultimoLabel !== tiempo){
 
-    grafica.data.labels.shift();
+/* Agregar datos */
 
-    grafica.data.datasets[0].data.shift();
-  }
+grafica.data.labels.push(tiempo);
+
+grafica.data.datasets[0].data.push(
+ultimo.voltaje
+);
+
+grafica.data.datasets[1].data.push(
+ultimo.corriente
+);
+
+grafica.data.datasets[2].data.push(
+ultimo.potencia
+);
+
+}
 
 
-  /* Guardar historial localmente */
-  localStorage.setItem(
-  "labels",
-  JSON.stringify(grafica.data.labels)
-  );
+/* Máximo 20 puntos */
 
-  localStorage.setItem(
-  "voltajes",
-  JSON.stringify(grafica.data.datasets[0].data)
-  );
+if(grafica.data.labels.length > 20){
+
+grafica.data.labels.shift();
+
+grafica.data.datasets[0].data.shift();
+
+grafica.data.datasets[1].data.shift();
+
+grafica.data.datasets[2].data.shift();
+
+}
 
 
-  /* Actualizar gráfica */
-  grafica.update();
+/* Guardar historial */
+
+localStorage.setItem(
+"labels",
+JSON.stringify(grafica.data.labels)
+);
+
+localStorage.setItem(
+"voltajes",
+JSON.stringify(grafica.data.datasets[0].data)
+);
+
+localStorage.setItem(
+"corrientes",
+JSON.stringify(grafica.data.datasets[1].data)
+);
+
+localStorage.setItem(
+"potencias",
+JSON.stringify(grafica.data.datasets[2].data)
+);
+
+
+/* Actualizar gráfica */
+
+grafica.update();
 }
 
 
 /* ========================= */
-/* Función INICIO */
+/* INICIO */
 /* ========================= */
 
 function iniciarSistema(){
 
-  sistemaActivo = true;
+sistemaActivo = true;
 
-  document.getElementById("ledVerde")
-  .classList.remove("apagado");
+document.getElementById("ledVerde")
+.classList.remove("apagado");
 
-  document.getElementById("ledVerde")
-  .classList.add("encendido");
+document.getElementById("ledVerde")
+.classList.add("encendido");
 
-  document.getElementById("ledRojo")
-  .classList.remove("encendido");
+document.getElementById("ledRojo")
+.classList.remove("encendido");
 
-  document.getElementById("ledRojo")
-  .classList.add("apagado");
+document.getElementById("ledRojo")
+.classList.add("apagado");
 }
 
 
 /* ========================= */
-/* Función PARO */
+/* PARO */
 /* ========================= */
 
 function paroEmergencia(){
 
-  sistemaActivo = false;
+sistemaActivo = false;
 
-  document.getElementById("ledRojo")
-  .classList.remove("apagado");
+document.getElementById("ledRojo")
+.classList.remove("apagado");
 
-  document.getElementById("ledRojo")
-  .classList.add("encendido");
+document.getElementById("ledRojo")
+.classList.add("encendido");
 
-  document.getElementById("ledVerde")
-  .classList.remove("encendido");
+document.getElementById("ledVerde")
+.classList.remove("encendido");
 
-  document.getElementById("ledVerde")
-  .classList.add("apagado");
+document.getElementById("ledVerde")
+.classList.add("apagado");
 }
 
 
 /* ========================= */
-/* Función paro programado */
+/* PARO PROGRAMADO */
 /* ========================= */
 
 function programarParo(){
 
-  let hora = document.getElementById("horaParo").value;
-
-  if(!hora){
-
-    alert("Seleccione una hora");
-    return;
-  }
+let hora =
+document.getElementById("horaParo").value;
 
 
-  let ahora = new Date();
+if(!hora){
 
-  let partes = hora.split(":");
+alert("Seleccione una hora");
 
-  let horaParo = new Date();
-
-  horaParo.setHours(partes[0]);
-
-  horaParo.setMinutes(partes[1]);
-
-  horaParo.setSeconds(0);
+return;
+}
 
 
-  /* Validar que la hora sea futura */
-  if(horaParo <= ahora){
+let ahora = new Date();
 
-    alert("Hora inválida");
+let partes = hora.split(":");
 
-    return;
-  }
+let horaParo = new Date();
 
+horaParo.setHours(partes[0]);
 
-  let tiempoRestante =
-  horaParo.getTime() - ahora.getTime();
+horaParo.setMinutes(partes[1]);
 
-
-  setTimeout(() => {
-
-    paroEmergencia();
-
-    alert(
-    "Sistema detenido por horario programado"
-    );
-
-  }, tiempoRestante);
+horaParo.setSeconds(0);
 
 
-  alert("Paro programado correctamente");
+/* Validar */
+
+if(horaParo <= ahora){
+
+alert("Hora inválida");
+
+return;
+}
+
+
+let tiempoRestante =
+horaParo.getTime() - ahora.getTime();
+
+
+setTimeout(() => {
+
+paroEmergencia();
+
+alert(
+"Sistema detenido por horario programado"
+);
+
+}, tiempoRestante);
+
+
+alert(
+"Paro programado correctamente"
+);
+
 }
 
 
 /* ========================= */
-/* Actualización automática */
+/* Selector gráfica */
 /* ========================= */
 
+function cambiarGrafica(){
+
+let opcion =
+document.getElementById("selectorGrafica").value;
+
+
+/* Ocultar todas */
+
+grafica.data.datasets[0].hidden = true;
+
+grafica.data.datasets[1].hidden = true;
+
+grafica.data.datasets[2].hidden = true;
+
+
+/* Mostrar según selección */
+
+if(opcion === "voltaje"){
+
+grafica.data.datasets[0].hidden = false;
+}
+
+else if(opcion === "corriente"){
+
+grafica.data.datasets[1].hidden = false;
+}
+
+else if(opcion === "potencia"){
+
+grafica.data.datasets[2].hidden = false;
+}
+
+else if(opcion === "todas"){
+
+grafica.data.datasets[0].hidden = false;
+
+grafica.data.datasets[1].hidden = false;
+
+grafica.data.datasets[2].hidden = false;
+}
+
+
+/* Actualizar */
+
+grafica.update();
+}
+
+
 /* Primera lectura */
+
 actualizar();
 
 
 /* Actualizar cada minuto */
+
 setInterval(actualizar, 60000);
 
 </script>
