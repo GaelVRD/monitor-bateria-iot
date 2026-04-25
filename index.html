@@ -616,6 +616,38 @@ beginAtZero:false
 
 });
 
+/* ========================= */
+/* Copia original datasets */
+/* ========================= */
+
+const datasetsOriginales = [
+
+{
+label:"Voltaje (V)",
+data:
+JSON.parse(localStorage.getItem("voltajes")) || [],
+borderColor:"lime",
+borderWidth:2,
+tension:0.2
+},
+
+{
+label:"Corriente (A)",
+data:historialCorriente,
+borderColor:"cyan",
+borderWidth:2,
+tension:0.2
+},
+
+{
+label:"Potencia (W)",
+data:historialPotencia,
+borderColor:"yellow",
+borderWidth:2,
+tension:0.2
+}
+
+];
 
 /* ========================= */
 /* Estado sistema */
@@ -850,30 +882,15 @@ let opcion =
 document.getElementById("selectorGrafica").value;
 
 
-/* Ocultar todas */
-
-grafica.data.datasets[0].hidden = true;
-
-grafica.data.datasets[1].hidden = true;
-
-grafica.data.datasets[2].hidden = true;
-
-
-/* ========================= */
-/* Mostrar según selección */
-/* ========================= */
-
-
 /* SOLO voltaje */
 
 if(opcion === "voltaje"){
 
-grafica.data.datasets[0].hidden = false;
+grafica.data.datasets = [
 
-grafica.options.plugins.legend.display = true;
+datasetsOriginales[0]
 
-grafica.data.datasets[0].label =
-"Voltaje (V)";
+];
 }
 
 
@@ -881,12 +898,11 @@ grafica.data.datasets[0].label =
 
 else if(opcion === "corriente"){
 
-grafica.data.datasets[1].hidden = false;
+grafica.data.datasets = [
 
-grafica.options.plugins.legend.display = true;
+datasetsOriginales[1]
 
-grafica.data.datasets[1].label =
-"Corriente (A)";
+];
 }
 
 
@@ -894,12 +910,11 @@ grafica.data.datasets[1].label =
 
 else if(opcion === "potencia"){
 
-grafica.data.datasets[2].hidden = false;
+grafica.data.datasets = [
 
-grafica.options.plugins.legend.display = true;
+datasetsOriginales[2]
 
-grafica.data.datasets[2].label =
-"Potencia (W)";
+];
 }
 
 
@@ -907,17 +922,19 @@ grafica.data.datasets[2].label =
 
 else if(opcion === "todas"){
 
-grafica.data.datasets[0].hidden = false;
+grafica.data.datasets = [
 
-grafica.data.datasets[1].hidden = false;
+datasetsOriginales[0],
 
-grafica.data.datasets[2].hidden = false;
+datasetsOriginales[1],
 
-grafica.options.plugins.legend.display = true;
+datasetsOriginales[2]
+
+];
 }
 
 
-/* Actualizar gráfica */
+/* Actualizar */
 
 grafica.update();
 }
