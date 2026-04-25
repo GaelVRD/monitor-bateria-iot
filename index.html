@@ -33,6 +33,70 @@ max-width:800px;
 margin:auto;
 }
 
+
+/* ========================= */
+/* LEDs visuales */
+/* ========================= */
+
+.led{
+
+width:25px;
+height:25px;
+border-radius:50%;
+display:inline-block;
+margin-right:10px;
+}
+
+
+/* LED verde */
+.verde{
+background:lime;
+}
+
+
+/* LED rojo */
+.rojo{
+background:red;
+}
+
+
+/* LED apagado */
+.apagado{
+opacity:0.2;
+}
+
+
+/* LED encendido */
+.encendido{
+opacity:1;
+}
+
+
+/* ========================= */
+/* Botones */
+/* ========================= */
+
+button{
+
+padding:10px 20px;
+margin:5px;
+font-size:16px;
+border:none;
+border-radius:8px;
+cursor:pointer;
+}
+
+
+/* ========================= */
+/* Input hora */
+/* ========================= */
+
+input{
+
+padding:8px;
+font-size:16px;
+}
+
 </style>
 
 </head>
@@ -42,45 +106,133 @@ margin:auto;
 <h1>Monitor batería IoT</h1>
 <h3>Equipo 03</h3>
 
+
+<!-- ========================= -->
+<!-- Tarjeta voltaje -->
+<!-- ========================= -->
+
 <div class="card">
 Voltaje
 <div id="v" class="valor">--</div>
 </div>
+
+
+<!-- ========================= -->
+<!-- Tarjeta corriente -->
+<!-- ========================= -->
 
 <div class="card">
 Corriente
 <div id="i" class="valor">--</div>
 </div>
 
+
+<!-- ========================= -->
+<!-- Tarjeta potencia -->
+<!-- ========================= -->
+
 <div class="card">
 Potencia
 <div id="p" class="valor">--</div>
 </div>
 
+
+
+<!-- ========================= -->
+<!-- Estado del sistema -->
+<!-- ========================= -->
+
+<div class="card">
+
+<h2>Estado del sistema</h2>
+
+<!-- LED verde -->
+<div id="ledVerde" class="led verde apagado"></div>
+Funcionando
+
+<br><br>
+
+<!-- LED rojo -->
+<div id="ledRojo" class="led rojo encendido"></div>
+Detenido
+
+</div>
+
+
+
+<!-- ========================= -->
+<!-- Controles -->
+<!-- ========================= -->
+
+<div class="card">
+
+<h2>Control</h2>
+
+<button onclick="iniciarSistema()">
+INICIO
+</button>
+
+<button onclick="paroEmergencia()">
+PARO DE EMERGENCIA
+</button>
+
+<br><br>
+
+<input type="time" id="horaParo">
+
+<button onclick="programarParo()">
+PARO POR HORARIO
+</button>
+
+</div>
+
+
+
 <h2>Gráfica de voltaje</h2>
 
 <canvas id="graficaVoltaje"></canvas>
+
+
 <script>
 
+/* URL del Apps Script */
 const url = "https://script.google.com/macros/s/AKfycbys1Zo3A7-hmdTwhwQ7viXDcNG_KiysLZol4BOyb-2SbS_09IGwRAEnM5Pl-EIhcaIPqQ/exec";
 
+
+/* Canvas de la gráfica */
 const ctx = document.getElementById("graficaVoltaje");
 
+
+/* Crear gráfica */
 const grafica = new Chart(ctx, {
+
   type: "line",
+
   data: {
+
+    /* Recuperar historial guardado */
     labels: JSON.parse(localStorage.getItem("labels")) || [],
+
     datasets: [{
+
       label: "Voltaje batería (V)",
+
       data: JSON.parse(localStorage.getItem("voltajes")) || [],
+
       borderColor: "lime",
+
       borderWidth: 2,
+
       tension: 0.2
     }]
   },
+
   options: {
+
     scales: {
+
       y: {
+
         beginAtZero: false
       }
     }
@@ -88,67 +240,205 @@ const grafica = new Chart(ctx, {
 });
 
 
+/* ========================= */
+/* Estado del sistema */
+/* ========================= */
+
+let sistemaActivo = false;
+
+
+/* ========================= */
+/* Actualizar datos */
+/* ========================= */
+
 async function actualizar() {
 
   let r = await fetch(url);
+
   let d = await r.json();
 
-  // mostrar valores actuales
 
-/* Obtener el último registro recibido */
-let ultimo = d[d.length - 1];
-
-
-/* Mostrar valores actuales */
-document.getElementById("v").innerText =
-ultimo.voltaje + " V";
-
-document.getElementById("i").innerText =
-ultimo.corriente + " A";
-
-document.getElementById("p").innerText =
-ultimo.potencia + " W";
+  /* Verificar si llegaron datos */
+  if(d.length === 0){
+    return;
+  }
 
 
-/* Crear etiqueta de tiempo */
-let tiempo =
-new Date(ultimo.tiempo).toLocaleTimeString();
+  /* Obtener último registro */
+  let ultimo = d[d.length - 1];
 
 
-/* Agregar nuevo punto */
-grafica.data.labels.push(tiempo);
+  /* Mostrar valores actuales */
 
-grafica.data.datasets[0].data.push(
-ultimo.voltaje
-);  
+  document.getElementById("v").innerText =
+  ultimo.voltaje + " V";
 
-/* Guardar historial localmente */
-localStorage.setItem(
-"labels",
-JSON.stringify(grafica.data.labels)
-);
+  document.getElementById("i").innerText =
+  ultimo.corriente + " A";
 
-localStorage.setItem(
-"voltajes",
-JSON.stringify(grafica.data.datasets[0].data)
-);
+  document.getElementById("p").innerText =
+  ultimo.potencia + " W";
 
-  // mantener máximo 20 valores
-  if (grafica.data.labels.length > 20) {
+
+  /* Crear etiqueta de tiempo */
+  let tiempo =
+  new Date(ultimo.tiempo).toLocaleTimeString();
+
+
+  /* Evitar duplicados al refrescar */
+  let ultimoLabel =
+  grafica.data.labels[grafica.data.labels.length - 1];
+
+
+  if(ultimoLabel !== tiempo){
+
+    /* Agregar nuevo punto */
+    grafica.data.labels.push(tiempo);
+
+    grafica.data.datasets[0].data.push(
+    ultimo.voltaje
+    );
+  }
+
+
+  /* Mantener mínimo historial reciente */
+  if(grafica.data.labels.length > 20){
+
     grafica.data.labels.shift();
+
     grafica.data.datasets[0].data.shift();
   }
 
+
+  /* Guardar historial localmente */
+  localStorage.setItem(
+  "labels",
+  JSON.stringify(grafica.data.labels)
+  );
+
+  localStorage.setItem(
+  "voltajes",
+  JSON.stringify(grafica.data.datasets[0].data)
+  );
+
+
+  /* Actualizar gráfica */
   grafica.update();
 }
 
 
-// actualizar cada minuto
-setInterval(actualizar, 60000);
+/* ========================= */
+/* Función INICIO */
+/* ========================= */
 
-// primera lectura al cargar la página
+function iniciarSistema(){
+
+  sistemaActivo = true;
+
+  document.getElementById("ledVerde")
+  .classList.remove("apagado");
+
+  document.getElementById("ledVerde")
+  .classList.add("encendido");
+
+  document.getElementById("ledRojo")
+  .classList.remove("encendido");
+
+  document.getElementById("ledRojo")
+  .classList.add("apagado");
+}
+
+
+/* ========================= */
+/* Función PARO */
+/* ========================= */
+
+function paroEmergencia(){
+
+  sistemaActivo = false;
+
+  document.getElementById("ledRojo")
+  .classList.remove("apagado");
+
+  document.getElementById("ledRojo")
+  .classList.add("encendido");
+
+  document.getElementById("ledVerde")
+  .classList.remove("encendido");
+
+  document.getElementById("ledVerde")
+  .classList.add("apagado");
+}
+
+
+/* ========================= */
+/* Función paro programado */
+/* ========================= */
+
+function programarParo(){
+
+  let hora = document.getElementById("horaParo").value;
+
+  if(!hora){
+
+    alert("Seleccione una hora");
+    return;
+  }
+
+
+  let ahora = new Date();
+
+  let partes = hora.split(":");
+
+  let horaParo = new Date();
+
+  horaParo.setHours(partes[0]);
+
+  horaParo.setMinutes(partes[1]);
+
+  horaParo.setSeconds(0);
+
+
+  /* Validar que la hora sea futura */
+  if(horaParo <= ahora){
+
+    alert("Hora inválida");
+
+    return;
+  }
+
+
+  let tiempoRestante =
+  horaParo.getTime() - ahora.getTime();
+
+
+  setTimeout(() => {
+
+    paroEmergencia();
+
+    alert(
+    "Sistema detenido por horario programado"
+    );
+
+  }, tiempoRestante);
+
+
+  alert("Paro programado correctamente");
+}
+
+
+/* ========================= */
+/* Actualización automática */
+/* ========================= */
+
+/* Primera lectura */
 actualizar();
 
+
+/* Actualizar cada minuto */
+setInterval(actualizar, 60000);
+
 </script>
+
 </body>
 </html>
