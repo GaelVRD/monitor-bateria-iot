@@ -859,22 +859,51 @@ grafica.data.datasets[1].hidden = true;
 grafica.data.datasets[2].hidden = true;
 
 
+/* ========================= */
 /* Mostrar según selección */
+/* ========================= */
+
+
+/* SOLO voltaje */
 
 if(opcion === "voltaje"){
 
 grafica.data.datasets[0].hidden = false;
+
+grafica.options.plugins.legend.display = true;
+
+grafica.data.datasets[0].label =
+"Voltaje (V)";
 }
+
+
+/* SOLO corriente */
 
 else if(opcion === "corriente"){
 
 grafica.data.datasets[1].hidden = false;
+
+grafica.options.plugins.legend.display = true;
+
+grafica.data.datasets[1].label =
+"Corriente (A)";
 }
+
+
+/* SOLO potencia */
 
 else if(opcion === "potencia"){
 
 grafica.data.datasets[2].hidden = false;
+
+grafica.options.plugins.legend.display = true;
+
+grafica.data.datasets[2].label =
+"Potencia (W)";
 }
+
+
+/* TODAS */
 
 else if(opcion === "todas"){
 
@@ -883,10 +912,12 @@ grafica.data.datasets[0].hidden = false;
 grafica.data.datasets[1].hidden = false;
 
 grafica.data.datasets[2].hidden = false;
+
+grafica.options.plugins.legend.display = true;
 }
 
 
-/* Actualizar */
+/* Actualizar gráfica */
 
 grafica.update();
 }
