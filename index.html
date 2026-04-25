@@ -280,6 +280,40 @@ details[open] summary::after{
 transform:rotate(180deg);
 }
 
+/* ========================= */
+/* Monitor gráfica */
+/* ========================= */
+
+.monitor{
+
+background:#0f0f0f;
+
+padding:20px;
+
+border-radius:20px;
+
+margin:auto;
+
+max-width:950px;
+
+border:3px solid rgba(255,255,255,0.08);
+
+box-shadow:
+
+0 0 25px rgba(0,0,0,0.45),
+
+0 0 10px rgba(255,255,255,0.05);
+
+}
+
+
+/* Canvas */
+
+.monitor canvas{
+
+width:100% !important;
+height:auto !important;
+}
 
 </style>
 
@@ -448,8 +482,11 @@ Todas
 
 <br><br>
 
+<div class="monitor">
+
 <canvas id="graficaVoltaje"></canvas>
 
+</div>
 
 
 <script>
