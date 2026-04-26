@@ -763,6 +763,48 @@ let respuesta = await r.json();
 
 let d = respuesta.datos;
 
+  /* Estado sistema */
+
+let estado =
+respuesta.estado;
+
+
+/* LEDS WEB */
+
+if(estado === "ON")
+{
+
+document.getElementById("ledVerde")
+.classList.remove("apagado");
+
+document.getElementById("ledVerde")
+.classList.add("encendido");
+
+
+document.getElementById("ledRojo")
+.classList.remove("encendido");
+
+document.getElementById("ledRojo")
+.classList.add("apagado");
+
+}
+else
+{
+
+document.getElementById("ledVerde")
+.classList.remove("encendido");
+
+document.getElementById("ledVerde")
+.classList.add("apagado");
+
+
+document.getElementById("ledRojo")
+.classList.remove("apagado");
+
+document.getElementById("ledRojo")
+.classList.add("encendido");
+
+}
 
 /* Verificar datos */
 if(d.length === 0){
