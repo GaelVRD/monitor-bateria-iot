@@ -759,7 +759,9 @@ async function actualizar(){
 
 let r = await fetch(url);
 
-let d = await r.json();
+let respuesta = await r.json();
+
+let d = respuesta.datos;
 
 
 /* Verificar datos */
