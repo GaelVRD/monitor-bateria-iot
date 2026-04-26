@@ -321,15 +321,25 @@ height:auto !important;
 
 .headerIPN{
 
+text-align:center;
+
+margin-bottom:30px;
+}
+
+
+/* Contenedor logos */
+
+.logosIPN{
+
 display:flex;
+
+justify-content:center;
 
 align-items:center;
 
-justify-content:space-between;
+gap:30px;
 
-margin-bottom:20px;
-
-padding:10px 20px;
+margin-bottom:15px;
 }
 
 
@@ -337,11 +347,36 @@ padding:10px 20px;
 
 .logo{
 
-width:80px;
+width:85px;
 
 height:auto;
+
+object-fit:contain;
 }
 
+
+/* Título */
+
+.tituloIPN{
+
+margin:0;
+
+font-size:26px;
+
+font-weight:bold;
+}
+
+
+/* Subtítulo */
+
+.subtituloIPN{
+
+margin-top:8px;
+
+font-weight:normal;
+
+color:rgba(255,255,255,0.8);
+}
 
 /* Texto central */
 
@@ -376,26 +411,29 @@ color:rgba(255,255,255,0.8);
 
 <div class="headerIPN">
 
-  <!-- Logo IPN -->
-  <img
-  src="logo-ipn.png"
-  class="logo">
 
-  
-  <!-- Texto central -->
-  <div>
+<div class="logosIPN">
 
-    <h2 class="tituloIPN">
-    Instituto Politécnico Nacional
-    </h2>
+<img
+src="logo-ipn.png"
+class="logo">
 
-    <h3 class="subtituloIPN">
-    ESIME Unidad Zacatenco
-    </h3>
+<img
+src="logo-esime.png"
+class="logo">
 
-  </div>
+</div>
+
+<h2 class="tituloIPN">
+Instituto Politécnico Nacional
+</h2>
 
 
+<h3 class="subtituloIPN">
+ESIME Unidad Zacatenco
+</h3>
+
+</div>
   <!-- Logo ESIME -->
   <img
   src="logo-esime.png"
