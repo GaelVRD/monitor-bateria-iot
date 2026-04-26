@@ -769,48 +769,60 @@ return;
 }
 
 
-/* Último registro */
-let ultimo = d[d.length - 1];
-console.log(ultimo);
+/* Limpiar gráfica */
 
-/* Mostrar valores */
+grafica.data.labels = [];
+
+grafica.data.datasets[0].data = [];
+
+grafica.data.datasets[1].data = [];
+
+grafica.data.datasets[2].data = [];
+
+
+/* Recorrer datos */
+
+for(let j = 0; j < d.length; j++){
+
+let dato = d[j];
+
+
+/* Mostrar últimos valores */
+
+if(j === d.length - 1){
 
 document.getElementById("v").innerText =
-ultimo.voltaje + " V";
+dato.voltaje + " V";
 
 document.getElementById("i").innerText =
-ultimo.corriente + " A";
+dato.corriente + " A";
 
 document.getElementById("p").innerText =
-ultimo.potencia + " W";
+dato.potencia + " W";
+}
 
 
 /* Tiempo */
+
 let tiempo =
-new Date(ultimo.tiempo).toLocaleTimeString();
+new Date(dato.tiempo)
+.toLocaleTimeString();
 
-
-/* Evitar duplicados */
-let ultimoLabel =
-grafica.data.labels[grafica.data.labels.length - 1];
-
-
-if(ultimoLabel !== tiempo){
 
 /* Agregar datos */
 
 grafica.data.labels.push(tiempo);
 
 grafica.data.datasets[0].data.push(
-ultimo.voltaje
+dato.voltaje
 );
 
 grafica.data.datasets[1].data.push(
-ultimo.corriente
+dato.corriente
 );
 
 grafica.data.datasets[2].data.push(
-ultimo.potencia
+dato.potencia
 );
 
 }
@@ -831,33 +843,9 @@ grafica.data.datasets[2].data.shift();
 }
 
 
-/* Guardar historial */
-/*
-localStorage.setItem(
-"labels",
-JSON.stringify(grafica.data.labels)
-);
-
-localStorage.setItem(
-"voltajes",
-JSON.stringify(grafica.data.datasets[0].data)
-);
-
-localStorage.setItem(
-"corrientes",
-JSON.stringify(grafica.data.datasets[1].data)
-);
-
-localStorage.setItem(
-"potencias",
-JSON.stringify(grafica.data.datasets[2].data)
-);
-*/
-
 /* Actualizar gráfica */
 
 grafica.update();
-}
 
 
 /* ========================= */
