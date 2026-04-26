@@ -855,9 +855,19 @@ grafica.update();
 /* INICIO */
 /* ========================= */
 
-function iniciarSistema(){
+async function iniciarSistema(){
 
 sistemaActivo = true;
+
+
+/* Enviar ON al servidor */
+
+await fetch(
+url + "?estado=ON"
+);
+
+
+/* LED verde */
 
 document.getElementById("ledVerde")
 .classList.remove("apagado");
@@ -865,11 +875,15 @@ document.getElementById("ledVerde")
 document.getElementById("ledVerde")
 .classList.add("encendido");
 
+
+/* LED rojo */
+
 document.getElementById("ledRojo")
 .classList.remove("encendido");
 
 document.getElementById("ledRojo")
 .classList.add("apagado");
+
 }
 
 
@@ -877,9 +891,19 @@ document.getElementById("ledRojo")
 /* PARO */
 /* ========================= */
 
-function paroEmergencia(){
+async function paroEmergencia(){
 
 sistemaActivo = false;
+
+
+/* Enviar OFF al servidor */
+
+await fetch(
+url + "?estado=OFF"
+);
+
+
+/* LED rojo */
 
 document.getElementById("ledRojo")
 .classList.remove("apagado");
@@ -887,14 +911,17 @@ document.getElementById("ledRojo")
 document.getElementById("ledRojo")
 .classList.add("encendido");
 
+
+/* LED verde */
+
 document.getElementById("ledVerde")
 .classList.remove("encendido");
 
 document.getElementById("ledVerde")
 .classList.add("apagado");
+
 }
-
-
+  
 /* ========================= */
 /* PARO PROGRAMADO */
 /* ========================= */
