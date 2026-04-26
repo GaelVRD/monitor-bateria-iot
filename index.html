@@ -745,39 +745,6 @@ beginAtZero:false
 });
 
 /* ========================= */
-/* Copia original datasets */
-/* ========================= */
-
-const datasetsOriginales = [
-
-{
-label:"Voltaje (V)",
-data:
-JSON.parse(localStorage.getItem("voltajes")) || [],
-borderColor:"lime",
-borderWidth:2,
-tension:0.2
-},
-
-{
-label:"Corriente (A)",
-data:historialCorriente,
-borderColor:"cyan",
-borderWidth:2,
-tension:0.2
-},
-
-{
-label:"Potencia (W)",
-data:historialPotencia,
-borderColor:"yellow",
-borderWidth:2,
-tension:0.2
-}
-
-];
-
-/* ========================= */
 /* Estado sistema */
 /* ========================= */
 
@@ -1007,66 +974,30 @@ alert(
 function cambiarGrafica(){
 
 let opcion =
-document.getElementById("selectorGrafica").value;
+document.getElementById(
+"selectorGrafica"
+).value;
 
 
-/* SOLO voltaje */
+/* Mostrar/Ocultar datasets */
 
-if(opcion === "voltaje"){
+grafica.data.datasets[0].hidden =
+(opcion !== "voltaje" &&
+ opcion !== "todas");
 
-grafica.data.datasets = [
+grafica.data.datasets[1].hidden =
+(opcion !== "corriente" &&
+ opcion !== "todas");
 
-datasetsOriginales[0]
-
-];
-}
-
-
-/* SOLO corriente */
-
-else if(opcion === "corriente"){
-
-grafica.data.datasets = [
-
-datasetsOriginales[1]
-
-];
-}
-
-
-/* SOLO potencia */
-
-else if(opcion === "potencia"){
-
-grafica.data.datasets = [
-
-datasetsOriginales[2]
-
-];
-}
-
-
-/* TODAS */
-
-else if(opcion === "todas"){
-
-grafica.data.datasets = [
-
-datasetsOriginales[0],
-
-datasetsOriginales[1],
-
-datasetsOriginales[2]
-
-];
-}
+grafica.data.datasets[2].hidden =
+(opcion !== "potencia" &&
+ opcion !== "todas");
 
 
 /* Actualizar */
 
 grafica.update();
 }
-
 
 /* Primera lectura */
 
